@@ -22,9 +22,9 @@ class Node(object):
         print(f"{spacing}{self.val}")
 
         if self.left:
-            self.left.traverse(spacing + "\t")
+            self.left.traverse(len(spacing) * ' ' + "└───")
         if self.right:
-            self.right.traverse(spacing + "\t")
+            self.right.traverse(len(spacing) * ' ' + "└───")
     
     def quick_find(self, val, loc=[]):
         # If found nothing
@@ -59,18 +59,28 @@ class Node(object):
             loc.pop(0)
             return self.right.get_val(loc)
 
+    def invert(self):
+        if self.left and self.right:
+            self.left, self.right = self.right, self.left
+            self.left.invert()
+            self.right.invert()
+
 def main():
     arr = [i for i in range(20)]
     node = Node.sorted_array_to_bst(arr)
     if node:
         node.traverse()
-        find_val = int(input("Please enter a val to find:\n> "))
-        loc = node.quick_find(find_val)
-        if loc is None:
-            print("Not found")
-            return
-        print("Location:", loc)
-        print("Val:", node.get_val(loc))
+        # find_val = int(input("Please enter a val to find:\n> "))
+        # loc = node.quick_find(find_val)
+        # if loc is None:
+            # print("Not found")
+            # return
+        # print("Location:", loc)
+        # print("Val:", node.get_val(loc))
+
+        print("Inverting tree")
+        node.invert()
+        node.traverse()
 
 if __name__ == '__main__':
     main()
